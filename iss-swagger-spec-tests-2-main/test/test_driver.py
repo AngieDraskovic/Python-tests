@@ -121,8 +121,8 @@ class DriverTest(unittest.TestCase):
 
     def test_03_create_driver(self):
         request_body = {
-            "name": "Pera",
-            "surname": "Perić",
+            "name": "Available",
+            "surname": "Driver",
             "profilePicture": "U3dhZ2dlciByb2Nrcw==",
             "telephoneNumber": "+381123123",
             "email": "pera.peric.vozac@email.com",
@@ -142,7 +142,7 @@ class DriverTest(unittest.TestCase):
         self.assertEqual(response_body['address'], request_body['address'])
         driver_login_data = {
             'email': self.__class__.available_driver['email'],
-            'password': DRIVER_PASSWORD
+            'password': "NekaSifra123"
         }
         response = send_post_request(data=driver_login_data, url=f'http://localhost:{PORT}/api/login/')
         print(response)
@@ -268,9 +268,9 @@ class DriverTest(unittest.TestCase):
             "name": "Available",
             "surname": "Driver",
             "profilePicture": "U3dhZ2dlciByb2Nrcw==",
-            "telephoneNumber": "+381021650650",
-            "email": "pera.peric.vozac@email.com",
-            "address": "Bulevar Oslobodjenja 84",
+            "telephoneNumber": "+3810021650650",
+            "email": "peraa.peric.vozac@email.com",
+            "address": "Bulevar Oslobodjenja 84"
         }
         response = send_put_request(data=request_body, url=f'{self.base_path}/{self.__class__.available_driver_id}', jwt=self.admin)
         self.assertEqual(response.status_code, 200)
@@ -420,7 +420,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_post_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body)
         self.assertEqual(response.status_code, 401)
@@ -437,7 +438,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_post_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.passenger)
         self.assertEqual(response.status_code, 403)
@@ -454,7 +456,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": "abc",
             "babyTransport": "123",
-            "petTransport": "123"
+            "petTransport": "123",
+            "available": True
         }
         response = send_post_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 400)
@@ -466,8 +469,9 @@ class DriverTest(unittest.TestCase):
             "licenseNumber": None,
             "currentLocation": None,
             "passengerSeats": None,
-            "babyTransport": "123",
-            "petTransport": "123"
+            "babyTransport": True,
+            "petTransport": True,
+            "available": True
         }
         response = send_post_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 400)
@@ -484,7 +488,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_post_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 200)
@@ -515,7 +520,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_post_request(url=f'{self.base_path}/123456/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 404)
@@ -548,7 +554,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_put_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body)
         self.assertEqual(response.status_code, 401)
@@ -565,7 +572,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_put_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.passenger)
         self.assertEqual(response.status_code, 403)
@@ -582,7 +590,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": "abc",
             "babyTransport": "123",
-            "petTransport": "123"
+            "petTransport": "123",
+            "available": True
         }
         response = send_put_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 400)
@@ -595,7 +604,8 @@ class DriverTest(unittest.TestCase):
             "currentLocation": None,
             "passengerSeats": None,
             "babyTransport": "123",
-            "petTransport": "123"
+            "petTransport": "123",
+            "available": True
         }
         response = send_put_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 400)
@@ -612,7 +622,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_put_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 200)
@@ -643,7 +654,8 @@ class DriverTest(unittest.TestCase):
             },
             "passengerSeats": 4,
             "babyTransport": True,
-            "petTransport": True
+            "petTransport": True,
+            "available": True
         }
         response = send_put_request(url=f'{self.base_path}/123456/vehicle', data=request_body, jwt=self.admin)
         self.assertEqual(response.status_code, 404)
@@ -678,10 +690,14 @@ class DriverTest(unittest.TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_52_add_working_hour(self):
+        print(self.working_time_start)
         request_body = {
-            "start": self.working_time_start
+            "start": self.working_time_start,
+            "end": self.working_time_end
         }
+        print(self.__class__.available_driver_token)
         response = send_post_request(url=f'{self.base_path}/{self.__class__.available_driver_id}/working-hour', data=request_body, jwt=self.__class__.available_driver_token)
+
         self.assertEqual(response.status_code, 200)
         response_body = response.json()
         self.__class__.driver_working_hour_id = response_body['id']
@@ -803,7 +819,7 @@ class DriverTest(unittest.TestCase):
     def test_67_get_working_hour_details_nonexisting(self):
         response = send_get_request(url=f'{self.base_path}/working-hour/12345678', jwt=self.admin)
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.text, 'Working hout does not exist!')
+        self.assertEqual(response.text, 'Working hour does not exist!')
 
     def test_68_rides_of_driver_unauthorized(self):
         query_params = {

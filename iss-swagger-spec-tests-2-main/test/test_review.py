@@ -20,7 +20,7 @@ class ReviewTest(unittest.TestCase):
             'email': PASSENGER_EMAIL,
             'password': PASSENGER_PASSWORD
         }
-        response = send_post_request(data=passenger_login_data, url=f'http://localhost:{PORT}/api/user/login')
+        response = send_post_request(data=passenger_login_data, url=f'http://localhost:{PORT}/api/login/')
         passenger = response.json()['accessToken']
         time.sleep(1)
         request_body = {
@@ -47,7 +47,9 @@ class ReviewTest(unittest.TestCase):
             'vehicleType': 'STANDARD',
             'babyTransport': True,
             'petTransport': True,
-            'scheduleTime': None
+            'scheduleTime': None,
+            "estimatedTime": 1.2,
+            "startTime": "2023-01-11T17:45:00Z"
         }
         response = send_post_request(data=request_body, url=f'http://localhost:{PORT}/api/ride', jwt=passenger)
         response_body = response.json()
@@ -57,7 +59,7 @@ class ReviewTest(unittest.TestCase):
             'email': response_body['driver']['email'],
             'password': ASSIGNED_DRIVER_PASSWORD
         }
-        response = send_post_request(data=driver_login_data, url=f'http://localhost:{PORT}/api/user/login')
+        response = send_post_request(data=driver_login_data, url=f'http://localhost:{PORT}/api/login/')
         driver = response.json()['accessToken']
         time.sleep(1)
         send_put_request(data=request_body, url=f'http://localhost:{PORT}/api/ride/{cls.ride_id}/accept', jwt=driver)
@@ -74,19 +76,19 @@ class ReviewTest(unittest.TestCase):
             'email': PASSENGER_EMAIL,
             'password': PASSENGER_PASSWORD
         }
-        response = send_post_request(data=passenger_login_data, url=f'http://localhost:{PORT}/api/user/login')
+        response = send_post_request(data=passenger_login_data, url=f'http://localhost:{PORT}/api/login/')
         self.passenger = response.json()['accessToken']
         admin_login_data = {
             'email': ADMIN_EMAIL,
             'password': ADMIN_PASSWORD
         }
-        response = send_post_request(data=admin_login_data, url=f'http://localhost:{PORT}/api/user/login')
+        response = send_post_request(data=admin_login_data, url=f'http://localhost:{PORT}/api/login/')
         self.admin = response.json()['accessToken']
         driver_login_data = {
             'email': DRIVER_EMAIL,
             'password': DRIVER_PASSWORD
         }
-        response = send_post_request(data=driver_login_data, url=f'http://localhost:{PORT}/api/user/login')
+        response = send_post_request(data=driver_login_data, url=f'http://localhost:{PORT}/api/login/')
         self.driver = response.json()['accessToken']
 
     def test_01_post_vehicle_review_unauthorized(self):
@@ -102,7 +104,7 @@ class ReviewTest(unittest.TestCase):
             "rating": 3,
             "comment": "The vehicle was bad and dirty"
         }
-        response = send_post_request(url=f'{self.base_path}/321/vehicle', data=data)
+        response = send_post_request(url=f'{self.base_path}/321/vehicle', data=data, jwt=self.passenger)
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.text, 'Ride does not exist!')
 

@@ -19,6 +19,7 @@ class VehicleTest(unittest.TestCase):
         driver = response.json()['accessToken']
         time.sleep(1)
         response = send_get_request(url=f'http://localhost:{PORT}/api/driver/{DRIVER_ID}/vehicle', jwt=driver)
+        print(response)
         response_body = response.json()
         cls.vehicle_id = response_body['id']
 
